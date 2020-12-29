@@ -1,32 +1,33 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
-'This is a module used to communicate with IFTTT platform.'
+'This is a module used to push notification.'
 
 __author__ = 'Andy Liu'
 
 import requests
 
-class Notification(object):
+class Notification:
+
+	def __init__(self, title, message):
+		self.title = title
+		self.message = message
+
+class IFTTT(Notification):
     
-	mykey = 'dVNxHrwtqldbtVk8OjbsDs'
-	def __init__(self, event, **values):
-		self.__url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (event, self.mykey)
-		self.__values = values
+	def __init__(self, title, message):
+		super().__init__(title, message)
+		self.mykey = 'dVNxHrwtqldbtVk8OjbsDs'
+		self.event = 'general'
+		self.url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (self.event, self.mykey)
+		self.values = {"value1":self.title, "value2":self.message}
 	
 	def sent(self):
-		requests.post(self.__url, data=self.__values)
-
-	@property
-	def url(self):
-		return self.__url
-
-	@property
-	def values(self):
-		return self.__values
+		requests.post(self.url, data=self.values)
 
 if __name__ == '__main__':
-	n = Notification('op-answers', value1 = 'answer1', value2 = 'answer2', value3 = 'answer3')
-#	n.sent()
+	n = IFTTT('This is Title', 'This is message!')
+	n.sent()
 	print(n.url)
+	print(n.title)
+	print(n.message)
 	print(n.values)
