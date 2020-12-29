@@ -21,12 +21,12 @@ class IFTTT(Notification):
 		self.url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (self.event, self.mykey)
 		self.values = {"value1":self.title, "value2":self.message}
 	
-	def sent(self):
+	def send(self):
 		requests.post(self.url, data=self.values)
 
 if __name__ == '__main__':
 	n = IFTTT('This is Title', 'This is message!')
-	n.sent()
+	n.send()
 	print(n.url)
 	print(n.title)
 	print(n.message)
