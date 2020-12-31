@@ -23,7 +23,10 @@ class IFTTT(Notification):
 	
 	def send(self):
 		"""Define the method for sending the message."""
-		requests.post(self.url, data=self.values)
+		MySession = requests.Session()
+		MyAdapter = requests.adapters.HTTPAdapter(max_retries=3)
+		MySession.mount('https://', MyAdapter)
+		MySession.post(self.url, data=self.values)
 
 if __name__ == '__main__':
 	n = IFTTT('This is Title', 'This is message!')
